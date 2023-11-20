@@ -1,4 +1,3 @@
-# Подключим библиотеки
 import scipy.stats as sps
 from tqdm.notebook import tqdm  # tqdm – библиотека для визуализации прогресса в цикле
 from statsmodels.stats.proportion import proportion_confint

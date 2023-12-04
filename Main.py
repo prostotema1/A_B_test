@@ -24,7 +24,7 @@ def Mann_whitneyu(sample1, sample2, alternative='two-sided', alpha=0.05):
     else:
         print("There is no statistical differences between samples")
 
-    return has_difference
+    return p_value
 
 
 def calculate_confidence_interval(data, alpha=0.05):
@@ -40,10 +40,31 @@ def tTest(sample1, sample2, alternative='two-sided', alpha=0.05):
     else:
         print("There is no statistical differences between samples")
 
-    return has_difference
+    return p_value
 
 
-def z_test_proportions(successes1, trials1, successes2, trials2, alternative='two-sided', value=0,alpha=0.05):
+def compare_tTest_and_Mann_Whitney(counter=1000) -> bool:
+    counter_t_test = 0
+    counter_manna_whitney = 0
+    k = counter
+    while k >= 0:
+        k -= 1
+        test = getSampleWithUniformDistribuition(-1,2,1000)
+        control = getSampleWithUniformDistribuition(-100,200,1000)
+        t_Test_result = tTest(test, control)
+        manna_whit_res = Mann_whitneyu(test,control)
+
+        if t_Test_result < 0.05:
+            counter_t_test += 1
+        if manna_whit_res < 0.05:
+            counter_manna_whitney += 1
+
+    print(f"T-test significance level: {counter_t_test / counter}")
+    print(f"Mann-whitney significance level: {counter_manna_whitney / counter}")
+    return counter_t_test < counter_manna_whitney
+
+
+def z_test_proportions(successes1, trials1, successes2, trials2, alternative='two-sided', value=0, alpha=0.05):
     z_stat, p_value = sm.stats.proportions_ztest(
         [successes1, successes2],
         [trials1, trials2],

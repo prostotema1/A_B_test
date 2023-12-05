@@ -4,7 +4,7 @@ import scipy.stats as stas
 from matplotlib import pyplot as plt
 import math
 
-def bootstrap(values_ctrl, values_var, iter=1000, alpha=0.05):
+def bootstrap(values_ctrl, values_var, iter=1000, alpha=0.05, mde = 0):
 
     size_ctrl = len(values_ctrl)
     size_var = len(values_var)
@@ -24,7 +24,7 @@ def bootstrap(values_ctrl, values_var, iter=1000, alpha=0.05):
     plt.bar(unique, counts)
     plt.show()
 
-    p_value = 1 - len(list(filter(lambda x: abs(x) > 0, diffs))) / iter
+    p_value = 1 - len(list(filter(lambda x: abs(x) > mde, diffs))) / iter
     print('p-value:', p_value)
 
     point_est = diff
@@ -42,3 +42,8 @@ def bootstrap(values_ctrl, values_var, iter=1000, alpha=0.05):
         print('There are NO statistically significant changes in the control group')
 
     return has_stat_diff, p_value, conf_int
+
+
+ctrl = [2280, 1757, 2343, 1940, 1835, 3083, 2544, 1900, 2813, 2149, 2490, 2319, 2697, 1875, 2774, 2024, 2177, 1876, 2596, 2675, 1803, 2939, 2496, 1892, 1962, 2233, 2061, 2421, 2375, 2324]
+var = [3008,2542,2365,2710,2297,2458,2838,2916,2652,2790,2420,2831,1972,2537,2516,3076,1968,1979,2626,2712,3112,2899,2407,2078,2928,2311,2915,2247,2805,1977]
+print(bootstrap(ctrl, var))
